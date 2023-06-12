@@ -1,16 +1,13 @@
-from flask import Flask, request, jsonify, render_template
-from flask_socketio import send,SocketIO, emit
-from openai.error import InvalidRequestError
+from flask import Flask, request, render_template
+from flask_socketio import SocketIO, emit
 import openai
-import time
 import textract
 import os
 import magic
 import re
 import tiktoken
 from dotenv import dotenv_values
-import os
-import sys
+
 
 app = Flask(__name__)
 sockets = SocketIO(app)
@@ -46,7 +43,6 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
 
 
 def cut_pre_text(message, number_tokens ):
-
     if number_tokens > 3600:
         # print("====================--------start cutting -------------=====================")
         while  True:
@@ -63,13 +59,11 @@ def cut_pre_text(message, number_tokens ):
             if number_tokens < 3550:
                 print("====================--------End of cutting -------------=====================")
                 print("--------------tokens final-------- ==> ", number_tokens)
-                break
-     
+                break     
         
         return  message 
         
-    else:
-       
+    else:       
         return message
 
 
@@ -101,17 +95,13 @@ def upload():
     file = request.files['file']
     # print("=====", file)
     key = file.filename
-
     file_path = f"{data_path}/{key}"
-    file.save(file_path)
-    
-   
+    file.save(file_path)       
     
     if mime.from_file(file_path) == "application/pdf":
         try:
             text= textract.process(file_path)  
-            text = str(text, "utf-8")
-                    
+            text = str(text, "utf-8")                   
                 
         except Exception as e:
             return f"Error reading PDF file:  {str(e)}" 
@@ -124,14 +114,7 @@ def upload():
     clean_text = re.sub("\n+", "\n", text)
     # print(clean_text)
     number_tokens = num_tokens_from_messages([{"role": "user", "content": clean_text }])
-    print ("==================================================================================")
-    print ("==================================================================================")
-    print ("=============first time file upload tokens check==============> ", number_tokens)
-    print ("==================================================================================")
-    print ("==================================================================================")
-    print("\n\n\n\n\n\n\n\n\n\n\n")
     clean_text = cut_pre_text(clean_text, number_tokens)    
-
     return clean_text
 
 
@@ -140,14 +123,7 @@ def upload():
 @sockets.on('message')
 def on_message(message):
     
-    start_time = time.time()
-    number_tokens=num_tokens_from_messages([{'role': 'user', 'content': message}])
-    print ("*******************************************************************************")
-    print ("*******************************************************************************")    
-    print ("=============Document plus prompt tokens ==============> ", number_tokens)
-    print ("*******************************************************************************")
-    print ("********************************************************************************")
-    print("\n\n\n\n\n\n\n\n\n\n\n")
+ 
     try:
         response = openai.ChatCompletion.create(
                 model='gpt-3.5-turbo',
@@ -157,19 +133,12 @@ def on_message(message):
                 temperature=1,
                 stream=True
         )   
-    
-        nd_time = time.time()
-        lapsed_time_in_seconds = nd_time - start_time
-        print(f"\n<====={lapsed_time_in_seconds}======>\n")
-        # print("=*=*="*15)
-        i=1 
+            
+
+
         for chunk in response:
             collected_messages = chunk['choices'][0]['delta']
             full_reply_content = ''.join(collected_messages.get('content', ''))
-            # print("====> ",collected_messages)
-            end_time = time.time()
-            elapsed_time_in_seconds = end_time - start_time
-            print(f"\n<====={elapsed_time_in_seconds}======>\n")
             emit('response', full_reply_content, broadcast=True)
 
         response.close()
