@@ -1,0 +1,8 @@
+Flask==2.3.2
+Flask==1.1.2
+Flask_SocketIO==5.2.0
+openai==0.27.7
+python-dotenv==1.0.0
+python_magic==0.4.27
+textract==1.6.5
+tiktoken==0.4.0
