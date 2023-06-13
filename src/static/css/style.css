@@ -1,0 +1,251 @@
+
+    h1 {
+      text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+      color: #333;
+      text-shadow: 1px 1px 2px #ccc;
+      margin-top: 50px;
+    }
+
+    .parent {
+      z-index: 0;
+      position: relative;
+      max-width: calc(76vw - 75px);
+      height: 726px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 13px #ccc;
+      background-color: rgb(0, 225, 255);
+
+
+    }
+
+    .container2 {
+      border-radius: 5px;
+      height: 658px;
+      margin-top: 7px;
+
+
+    }
+
+    .r1 {
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+
+    .r2 {
+      padding-left: 2px;
+      padding-right: 0px;
+    }
+
+    .textfield {
+      position: absolute;
+      z-index: 1;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding-bottom: 2px;
+    }
+
+    #text {
+      border-radius: 8px;
+      margin-top: 3px;
+      border-color: #3297db;
+    }
+
+    .btn-group {
+      margin-left: 0px;
+    }
+
+
+
+
+
+    textarea {
+      display: inline-block;
+      /* make the textarea inline-block */
+      vertical-align: middle;
+      /* align the elements vertically in the middle */
+    }
+
+    textarea.form-control {
+      width: 70%;
+      display: inline;
+      margin-bottom: 7px;
+      min-height: 47px;
+    }
+
+
+    button {
+      display: inline-block;
+      /* make the button inline-block */
+      vertical-align: middle;
+      /* align the elements vertically in the middle */
+      margin-left: 10px;
+      /* add a little space between the elements */
+      margin-bottom: 8px;
+
+    }
+
+    /* .bt{
+  margin-bottom: 8px;
+ 
+} */
+    .btn {
+      background-color: #ffee03;
+      color: black;
+      margin-bottom: 12px;
+
+    }
+
+
+    /* -------------this section has chatbox css --------------------- */
+    #chatbox {
+
+      max-height: 100%;
+      overflow: auto;
+    }
+
+    .bot-message,
+    .user-message {
+      max-width: 98%;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      margin-left: 4px;
+      align-self: flex-start;
+    }
+
+    .bot-message {
+      background-color: #f0f0f0;
+      align-self: flex-end;
+      white-space: pre-wrap;
+      color: black;
+    }
+
+    .user-message {
+      background-color: #cce6ff;
+      align-self: flex-start;
+      white-space: pre-wrap;
+      color: black;
+    }
+
+    .typing-indicator {
+      margin-top: 10px;
+    }
+
+    .typing-indicator span {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background-color: #ccc;
+      margin: 0 5px;
+      animation: typing 1s linear infinite;
+    }
+
+
+    /* --- this section is for upload css button  ----------------------------------------------*/
+
+    .custom-file-upload {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 12px;
+      margin-bottom: 14px;
+      background-color: #ffee03;
+      color: black;
+
+    }
+
+
+    #file-input::-webkit-file-upload-button {
+      visibility: hidden;
+    }
+
+    #file-input::before {
+      content: 'Select file';
+    }
+
+    #file-input:focus::before {
+      outline: none;
+
+    }
+
+    #result {
+      padding-left: 5px;
+      padding-right: 5px;
+      font-size: 13pt;
+      line-height: 1.5;
+      color: green;
+      text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    }
+
+    /* --------------------- This section for responsive screen-------------------- */
+    @media only screen and (max-width: 1450px) {
+      h1 {
+        margin-top: 14px;
+        margin-bottom: 5px;
+      }
+
+      .parent {
+        z-index: 0;
+        position: relative;
+        max-width: calc(78vw - 75px);
+        height: 500px;
+        margin-top: 20px;
+        background-color: rgb(0, 225, 255);
+        border-radius: 5px;
+      }
+
+      .container2 {
+        height: 651px;
+        border-radius: 5px;
+
+      }
+
+      .textfield {
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding-bottom: 5px;
+        padding: 0 0px;
+      }
+
+      .custom-file-upload {
+        padding-bottom: 12px;
+      }
+
+      .btn {
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+      }
+
+      button:active {
+        background-color: #ffee03;
+      }
+
+      #result {
+        /* height: 438px; */
+        overflow: auto;
+        padding-left: 5px;
+        padding-right: 5px;
+        white-space: pre-wrap;
+      }
+
+    }
+
+
+    pre {
+      background-color: #f7f7f7;
+      background-color: #f0d7ed;
+      border-radius: 5px;
+      color: #000000;
+      font-family: Consolas, 'Courier New', monospace;
+      padding: 10px;
+      overflow: auto;
+      white-space: pre-wrap;
+
+    }

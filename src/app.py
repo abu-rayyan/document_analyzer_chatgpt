@@ -1,5 +1,7 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 from flask_socketio import SocketIO, emit
+from flask_session import Session
+from flask_cors import CORS
 import openai
 import textract
 import os
@@ -7,17 +9,32 @@ import magic
 import re
 import tiktoken
 from dotenv import load_dotenv
-
+import time
+import psutil
 
 app = Flask(__name__)
-sockets = SocketIO(app)
 
+app.config['SECRET_KEY'] = 'top-secret!'
+app.config['SESSION_TYPE'] = 'filesystem'
+
+Session(app)
+# allow cross origin domain requests and also accept request cookies
+CORS(app, resources={r"/*": {"origins": ["*"]}}, supports_credentials=True)
+# add two new parameter for cors manage same session
+sockets = SocketIO(app, manage_session=False, cors_allowed_origins="*")
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 working_dir = os.getcwd()
 data_folder = os.path.join(working_dir, "../data")
 mime = magic.Magic(mime=True)
+
+
+def calculate_memory_usage():
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    memory_usage = memory_info.rss / 1024 / 1024  # Convert to megabytes
+    return memory_usage
 
 
 def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
@@ -29,7 +46,8 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
     if model == "gpt-3.5-turbo":  # note: future models may deviate from this
         num_tokens = 0
         for message in messages:
-            num_tokens += 4  # every message follows <im_start>{role/name}\n{content}<im_end>\n
+            # every message follows <im_start>{role/name}\n{content}<im_end>\n
+            num_tokens += 4
             for key, value in message.items():
                 num_tokens += len(encoding.encode(value))
                 if key == "name":  # if there's a name, the role is omitted
@@ -75,6 +93,20 @@ def remove_bullet_points(text):
 def index():
     return render_template("toktobot.html")
 
+# this route will use if request is made from other servers
+
+
+@app.route('/setcookie')
+def cookie():
+    return session.sid
+
+
+@app.route('/empty')
+def trash():
+    session['text'] = ""
+    print("  trash ===>", session.get('text', ''))
+    return "empty session"
+
 
 @app.route("/parse", methods=["POST"])
 def upload():
@@ -113,7 +145,7 @@ def upload():
             try:
                 text = textract.process(file_path)
                 text = str(text, "utf-8")
-            except:
+            except BaseException:
                 return f"Error parsing file {key}"
 
         else:
@@ -127,15 +159,17 @@ def upload():
     number_tokens = num_tokens_from_messages(
         [{"role": "user", "content": clean_text}]
     )
-    print("\n\n==============================>  ", number_tokens, "\n\n")
     clean_text = cut_pre_text(clean_text, number_tokens)
-    return clean_text
+    session['text'] = clean_text
+    return "uploaded successfully"
 
 
 @sockets.on("message")
 def on_message(message):
-
+    start = time.time()
+    text = session.get('text', "")
     try:
+        message = message + "\n\n doc: " + text
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -143,7 +177,7 @@ def on_message(message):
                     "role": "user",
                     "content": "Use the below document to answer the subsequent question. If the answer cannot be found in the articles, write 'I could not find an answer'..\n"
                     + message,
-                }  # message['message']
+                }
             ],
             temperature=0,
             stream=True,
@@ -154,16 +188,20 @@ def on_message(message):
             full_reply_content = "".join(collected_messages.get("content", ""))
 
             emit("response", full_reply_content, broadcast=True)
-
+        end = time.time()
+        print("The time of execution of above program is :",
+              (end - start) * 10**3, "ms")
         response.close()
     except openai.error.OpenAIError as e:
-        error_message = f"reduce document size to 2 or 3 pages so this error will not come: {str(e)}"
+        error_message = f"limit exceed as you can make 3 RPM so try again after 1 mint :"
         emit("response", error_message, broadcast=True)
 
     except Exception as e:
-        error_message = f"Unknown error: {str(e)}"
+        error_message = "Unknown error"
         emit("response", error_message, broadcast=True)
 
 
 if __name__ == "__main__":
-    sockets.run(app, debug=False, allow_unsafe_werkzeug=True)
+    memory_usage = calculate_memory_usage()
+    print(f"Memory usage: {memory_usage} MB")
+    sockets.run(app, debug=False, host="0.0.0.0", port=8000)
