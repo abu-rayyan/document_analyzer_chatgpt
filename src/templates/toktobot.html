@@ -1,467 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
-    <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    rel="stylesheet"
-    />
-    <!-- Google Fonts -->
-    <link
-    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-    rel="stylesheet"
-    />
-    <!-- MDB -->
-    <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css"
-    rel="stylesheet"
-    />
-    <!-- MDB -->
-
-      <style>
-     
-     h1 {
-        text-align: center;
-        font-size: 36px;
-        font-weight: bold;
-        color: #333;
-        text-shadow: 1px 1px 2px #ccc;
-        margin-top: 50px;
-    }
- 
-    .parent {
-        z-index: 0;
-        position: relative;
-        max-width: calc(76vw - 75px);
-        height:726px;
-        margin-top:20px;
-        border-radius: 10px;
-         box-shadow: 0px 0px 13px #ccc;
-        background-color: rgb(0, 225, 255);
-
-      
-      }
-      
-      .container2{
-        border-radius: 5px;
-        height: 658px;
-        margin-top: 7px;
-        
-        
-      }
-      .r1{
-        padding-right: 0px;
-        padding-left: 0px;
-      }
-
-      .r2{
-        padding-left: 2px;
-        padding-right: 0px;
-      }
-
-      .textfield {
-        position: absolute;
-        z-index: 1;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding-bottom: 2px;
-      }
-
-      #text{
-        border-radius: 8px;
-        margin-top: 3px;
-        border-color: #3297db;
-      }
-
-      .btn-group {
-        margin-left: 0px;
-      }
-      
-    
-     
-      
-
-      textarea {
-  display: inline-block; /* make the textarea inline-block */
-  vertical-align: middle; /* align the elements vertically in the middle */
-}
-textarea.form-control {
-  width: 70%;
-  display: inline;
-  margin-bottom: 7px;
-  min-height: 47px;
-}
-
-
-button {
-  display: inline-block; /* make the button inline-block */
-  vertical-align: middle; /* align the elements vertically in the middle */
-  margin-left: 10px; /* add a little space between the elements */
-  margin-bottom: 8px;
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
   
-}
-/* .bt{
-  margin-bottom: 8px;
- 
-} */
-.btn{
-  background-color: #ffee03;
-  color: black;
-  margin-bottom: 12px;
-  
-}
 
-
-/* -------------this section has chatbox css --------------------- */
-      #chatbox {
-    
-      max-height: 100%;
-      overflow: auto;
-    }
-    .bot-message,
-    .user-message {
-      max-width: 98%;
-      padding: 10px;
-      border-radius: 10px;
-      margin-top: 10px;
-      margin-left: 4px;
-      align-self: flex-start;
-    }
-    
-    .bot-message {
-      background-color: #f0f0f0;
-      align-self: flex-end;
-      white-space: pre-wrap;
-      color: black;
-    }
-    
-    .user-message {
-      background-color: #cce6ff;
-      align-self: flex-start;
-      white-space: pre-wrap;
-      color: black;
-    }
-    
-    .typing-indicator {
-      margin-top: 10px;
-    }
-    
-    .typing-indicator span {
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background-color: #ccc;
-      margin: 0 5px;
-      animation: typing 1s linear infinite;
-    }
-
-
-    /* --- this section is for upload css button  ----------------------------------------------*/
-
-    .custom-file-upload {
-    display: inline-block;
-        margin-left: 5px;
-        font-size: 12px;
-        margin-bottom: 14px;
-        background-color: #ffee03;
-        color: black;
-        
-  }
- 
-
-  #file-input::-webkit-file-upload-button {
-    visibility: hidden;
-  }
-  #file-input::before {
-    content: 'Select file';
-  }
-  #file-input:focus::before {
-    outline: none;
-
-  }
-   
-  #result {
-  padding-left: 5px;
-  padding-right: 5px;
-  font-size: 13pt;
-  line-height: 1.5;
-  color: green;
-  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-}
-
-/* --------------------- This section for responsive screen-------------------- */
-      @media only screen and (max-width: 1450px) {
-        h1{
-          margin-top: 14px;
-          margin-bottom: 5px;
-        }
-        .parent {
-          z-index: 0;
-        position: relative;
-        max-width: calc(78vw - 75px);
-        height:500px;
-        margin-top:20px;
-        background-color: rgb(0, 225, 255);
-        border-radius: 5px;
-        }
-      
-      .container2{
-        height: 651px;
-        border-radius: 5px;
-      
-      }
-      .textfield {
-        position: absolute;
-        z-index: 1;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding-bottom: 5px;
-        padding: 0 0px;
-      }
-
-      .custom-file-upload {
-    padding-bottom: 12px;     
-  }
-  .btn {
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-  }
-  button:active{
-    background-color: #ffee03;
-  }
-      #result{
-    /* height: 438px; */
-    overflow: auto;
-    padding-left: 5px;
-    padding-right: 5px;
-    white-space: pre-wrap;
-  }
-      
-      } 
-    
-
-      pre {
-      background-color: #f7f7f7;
-      background-color: #f0d7ed;
-      border-radius: 5px;
-      color: #000000;
-      font-family: Consolas, 'Courier New', monospace;
-      padding: 10px;
-      overflow: auto;
-      white-space: pre-wrap;
-     
-    }
-   
-
-      </style>
 </head>
-
-
 <body>
-  
+
+
   <h1 class="left">TokToBot Demo</h1>
-  <!-- textfield -->
- 
+
   <div class="container parent">
 
     <div class="textfield" style="width: 75%; margin: auto; color: black;  ">
-      <form  style="display: inline;" id="chat-form" >
-            <textarea type="text" class="form-control" rows="1" id="user-message" name="user_message"></textarea>
-            <button type="submit" class="btn btn-primary bt" style="border-bottom-width: 00px;margin-bottom: 13px;" >Send</button>
+      <form style="display: inline;" id="chat-form">
+        <textarea type="text" class="form-control" rows="1" id="user-message" name="user_message"></textarea>
+        <button type="submit" class="btn btn-primary bt"
+          style="border-bottom-width: 00px;margin-bottom: 13px;">Send</button>
       </form>
 
 
-        <div style="display: inline;" class="btn-group">
-          <form style="display: inline;" action="">
-            <input type="file" id="file-input" name="file" style="display:none">
-            <label for="file-input" class="custom-file-upload btn btn-primary">Upload</label>
-          </form>
-        </div>
-   
-  </div>
-
-
-    
-    <div class="row">
-        <div class="col-md-12">
-          <div class="container2" style="background-color: #f9f9f9;">
-            <div id="chatbox">
-              <!-- <p>For more information, visit the <a href="https://beta.openai.com/docs/api-reference/completions/create">OpenAI API documentation</a>.</p> -->
-            </div>
-          </div>
-        </div>
+      <div style="display: inline;" class="btn-group">
+        <form style="display: inline;" action="">
+          <input type="file" id="file-input" name="file" style="display:none">
+          <label for="file-input" class="custom-file-upload btn btn-primary">Upload</label>
+        </form>
       </div>
 
+    </div>
 
+    <div class="row">
+      <!-- <div class="col-md-12"> -->
+        <div class="container2" style="background-color: #f9f9f9;">
+          <div id="chatbox">
+          </div>
+        </div>
+      <!-- </div> -->
+    </div>
 
   </div>
   <div id="result"></div>
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script>
-    var text;
-    document.getElementById('file-input').addEventListener('change', function() {
-      var formData = new FormData();
-      formData.append('file', this.files[0]);
-  
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/parse');
-      xhr.onload = function() {
-        if (xhr.status === 200) {
-          text = xhr.responseText;
-        //   document.getElementById('result').innerHTML = xhr.responseText;
-        document.getElementById('result').innerHTML = 'Successfully uploaded';
-        }
-      };
-      xhr.send(formData);
-    });
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 
-
-
-    // const socket = io.connect('http://question-and-answer-document.com:5000/);
-    const socket = io.connect("http://127.0.0.1:5000");
-
-// get DOM elements
-const chatBox = document.getElementById('chatbox');
-const chatForm = document.getElementById('chat-form');
-const userMessage = document.getElementById('user-message');
-
-// function to add messages to chat box
-function addMessage(message) {
-  const p = document.createElement('p');
-  p.innerHTML = message;
-  chatBox.appendChild(p);21
-}
-
-// submit form and send message to server on submit
-chatForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-    //  Create element
-    let msg_text = "";
-    botMessageHTML = document.createElement('div');
-  botMessageHTML.classList.add('bot-message');
-  let message = userMessage.value.trim();
-  if (message !== '') {
-   
-    if(text){
-      msg_text = message +'\n' + "Document:" + '\n\n' + text;
-      socket.emit('message', msg_text);
-    }else{
-      // send message to server
-    socket.emit('message', message);
-    }
-    
-
-    // add user message to chat box
-    var userMessageHTML = '<div class="user-message">' + message + '</div>';
-    $(userMessageHTML).appendTo('#chatbox');
-    
-     var typingIndicator = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
-     $('#chatbox').append(typingIndicator); 
-     scrollToBottom();
-     // add typing indicator
-    // clear message input
-    userMessage.value = '';
-    textarea.style.height = '50px';
-  }
-});
-let count = 0;
-let count2 =0;
- let para;
- let codeElement
-// receive response from server through socket
-socket.on('response', (message) => {
- 
-  // add bot message to chat box
-  $('.typing-indicator').remove();
-  if(message == "``" || message == "```"){
-    count+=1;
-    if(count == 1){
-      para = document.createElement("pre");
-    //  codeElement = document.createElement("code");
-    //  codeElement.classList.add("language-python")
-    // para.appendChild(codeElement);
-        
-    }
-    
-  }else if(count == 1){
-    para.innerHTML+= message;
-    $(botMessageHTML).append(para);
-    scrollToBottom();
-  }else if(count == 2){
-   count = 0; 
-    
-  }else{
-  
-      botMessageHTML.innerHTML+=message;
-      $(botMessageHTML).appendTo('#chatbox');
-      scrollToBottom();
-    }
-
-  
-  
-
-});
-
-
-function scrollToBottom() {
-          const chatbox = document.getElementById("chatbox");
-          chatbox.scrollTop = chatbox.scrollHeight;
-        }
-
-// JavaScript
-const textarea = document.getElementById('user-message');
-
-textarea.addEventListener('input', () => {
-  const lines = textarea.value.split('\n').length;
-  if (lines === 1) {
-    textarea.style.height = '40px'; // set to minimum height
-  } else {
-    textarea.style.height = '70px'; // set to maximum height
-  }
-});
-
-textarea.addEventListener('keydown', (event) => {
-  if (event.keyCode === 13 && event.shiftKey) {
-    // add a new line to the text area
-    textarea.value += '\n';
-    // adjust the height of the text area to fit the new line
-    textarea.style.height = `${textarea.scrollHeight}px`;
-    // prevent the form from submitting
-    event.preventDefault();
-  }
- 
-});
-
-
-
-
-
-
-
-  </script>
-  
-  
-  
-  
-  
-  
-  </body>
-  
-      
-      
 </body>
-
-<script
-type="text/javascript"
-src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
-></script>
-
 </html>
-
