@@ -10,7 +10,7 @@ import re
 import tiktoken
 from dotenv import load_dotenv
 import time
-import psutil
+
 
 app = Flask(__name__)
 
@@ -29,12 +29,6 @@ working_dir = os.getcwd()
 data_folder = os.path.join(working_dir, "../data")
 mime = magic.Magic(mime=True)
 
-
-def calculate_memory_usage():
-    process = psutil.Process()
-    memory_info = process.memory_info()
-    memory_usage = memory_info.rss / 1024 / 1024  # Convert to megabytes
-    return memory_usage
 
 
 def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
@@ -72,7 +66,7 @@ def cut_pre_text(message, number_tokens):
             )
             message = new_msg
             if number_tokens < 3550:
-                print("--------------tokens final-------- ==> ", number_tokens)
+                #print("--------------tokens final-------- ==> ", number_tokens)
                 break
         return message
     else:
@@ -104,7 +98,7 @@ def cookie():
 @app.route('/empty')
 def trash():
     session['text'] = ""
-    print("  trash ===>", session.get('text', ''))
+    
     return "empty session"
 
 
@@ -202,6 +196,5 @@ def on_message(message):
 
 
 if __name__ == "__main__":
-    memory_usage = calculate_memory_usage()
-    print(f"Memory usage: {memory_usage} MB")
+
     sockets.run(app, debug=False, host="0.0.0.0", port=8000)
