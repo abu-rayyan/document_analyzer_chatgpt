@@ -1,4 +1,6 @@
 # document_analyzer_chatgpt
+- Clone this repository
+- Install all the requirements by using pip install -r requirements.txt
 - This repo code can analyze document using ChatGPT. 
 - This repo using sockets for sending and receiving messages.
 - You can upload any document of around 3-4 pages and then can ask relevant questions. 
