@@ -29,7 +29,7 @@ This repository contains code for a Python project that utilizes ChatGPT to anal
 3. Run the project by executing the main script:
 
     ```
-    python main.py
+    python app.py
     ```
 
 4. Once the project is running, you can upload a document (approximately 3-4 pages in length) and then ask relevant questions about its content.
